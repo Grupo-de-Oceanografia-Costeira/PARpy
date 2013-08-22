@@ -16,6 +16,8 @@ def extract_mat(indir)
         dates = d[0,0][:,0]
         hours = np.int64(d[0,0][:,0])
         for hour in hours:
-            if #quantity of numbers is == 3, must be added a microsecond unity (+ '0')
-            hours_proc.append(datetime.strptime(str(i), "%H%M%S%f"))
+            if len(str(hour)) == 3:
+                hours_proc.append(datetime.strptime(str(i)+'0', "%H%M%S%f"))#quantity of numbers is == 3, must be added a microsecond unity (+ '0')
+            else:
+                hours_proc.append(datetime.strptime(str(i), "%H%M%S%f"))
 
