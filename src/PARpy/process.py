@@ -8,7 +8,7 @@ import os
 
 hours_proc = []
 
-def extract_mat(indir)
+def extract_mat(indir):
     for filename in sorted(glob.glob(os.path.join(indir, '*.mat'))):
         f = loadmat(filename)
         d = f['hdfdata']['Reference_Par_hyperspectral_data']
@@ -20,5 +20,5 @@ def extract_mat(indir)
                 hours_proc.append(datetime.strptime(str(i)+'0', "%H%M%S%f"))#quantity of numbers is == 3, must be added a microsecond unity (+ '0')
             else:
                 hours_proc.append(datetime.strptime(str(i), "%H%M%S%f"))
-
+    
     return par, dates, hours 
