@@ -21,3 +21,4 @@ def extract_mat(indir)
             else:
                 hours_proc.append(datetime.strptime(str(i), "%H%M%S%f"))
 
+    return par, dates, hours 
