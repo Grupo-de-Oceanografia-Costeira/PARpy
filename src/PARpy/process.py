@@ -6,18 +6,27 @@ from datetime import datetime
 import glob
 import os
 
-hours_proc = []
-
-def extract_mat(indir)
+def extract_mat(indir):
+    dicts = []
+    d = {}
     for filename in sorted(glob.glob(os.path.join(indir, '*.mat'))):
         f = loadmat(filename)
-        d = f['hdfdata']['Reference_Par_hyperspectral_data']
-        par = d[0.0][:,2]
-        dates = d[0,0][:,0]
-        hours = np.int64(d[0,0][:,0])
+        dat = f['hdfdata']['Reference_Par_hyperspectral_data']
+        par = dat[0,0][:,2]
+        dates = dat[0,0][:,0]
+        hours = np.int64(dat[0,0][:,0])
+        if d:
+            dicts.append(d)
+        d = {}
+        d['name'] = filename
+        d['par'] = par
+        d['dates'] = dates
+        d['hours'] = [] 
         for hour in hours:
             if len(str(hour)) == 3:
-                hours_proc.append(datetime.strptime(str(i)+'0', "%H%M%S%f"))#quantity of numbers is == 3, must be added a microsecond unity (+ '0')
+                d['hours'].append(datetime.strptime(str(hour)+'0', "%H%M%S%f"))
             else:
-                hours_proc.append(datetime.strptime(str(i), "%H%M%S%f"))
+                d['hours'].append(datetime.strptime(str(hour), "%H%M%S%f"))
+        
+    return dicts
 
