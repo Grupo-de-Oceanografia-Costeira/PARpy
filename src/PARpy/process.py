@@ -25,14 +25,17 @@ def extract_mat(indir):
         d['hours'] = []
         td = str(np.int(d['dates'][0]))
         ttd = np.int(td[-3::])
+        tty = np.int(td[:4])
 
         for hour in hours:
-            if len(str(hour)) == 3:
-                tt = datetime.strptime(str(hour)+'0', "%H%M%S%f")
-                d['hours'].append(tt + timedelta(days=ttd))
+            if len(str(hour)) <= 5:
+                tt = datetime.strptime('00'+str(hour), "%H%M%S%f")
+                at = (tt + timedelta(days=ttd)).replace(year=tty)
+                d['hours'].append(at)
             else:
                 tt = datetime.strptime(str(hour), "%H%M%S%f")
-                d['hours'].append(tt + timedelta(days=ttd))
+                at = (tt + timedelta(days=ttd)).replace(year=tty)
+                d['hours'].append(at)
 
         if d:
             dicts.append(d)
