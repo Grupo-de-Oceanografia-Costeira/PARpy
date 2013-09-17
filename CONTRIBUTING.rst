@@ -13,7 +13,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/arnaldorusso/PARpy/lissues.
+Report bugs at https://github.com/arnaldorusso/PARpy/issues.
 
 If you are reporting a bug, please include:
 
@@ -78,10 +78,10 @@ Ready to contribute? Here's how to set up `PARpy` for local development.
 tests, including testing other Python versions with tox::
 
     $ flake8 PARpy tests
-	  $ python setup.py test
+	$ python setup.py test
     $ tox
 
-  To get flake8 and tox, just pip install them into your virtualenv. 
+    To get flake8 and tox, just pip install them into your virtualenv. 
 
 6. Commit your changes and push your branch to GitHub::
 
