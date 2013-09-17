@@ -33,6 +33,9 @@ def extract_mat(indir):
                 at = (tt + timedelta(days=ttd)).replace(year=tty)
                 d['hours'].append(at)
             else:
+                # Problems with dates like 100716.
+                # 1 hour, 00 minutes, 7 seconds, 16 microseconds
+                # Still parsing in wrong way!
                 tt = datetime.strptime(str(hour), "%H%M%S%f")
                 at = (tt + timedelta(days=ttd)).replace(year=tty)
                 d['hours'].append(at)
