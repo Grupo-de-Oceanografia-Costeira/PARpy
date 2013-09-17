@@ -1,44 +1,46 @@
-from setuptools import setup, find_packages
-import sys, os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.rst')).read()
-NEWS = open(os.path.join(here, 'NEWS.txt')).read()
-
-
-version = '0.1'
-
-install_requires = [
-    'numpy',
-    'pysolar'
-]
+import os
+import sys
 
 
-setup(name='PARpy',
-    version=version,
-    description="Processing tool for PAR data of Satlantic Radiometers",
-    long_description=README + '\n\n' + NEWS,
-    classifiers=[
-          'Development Status :: 3 - Alpha',
-          'Intended Audience :: Science/Research',
-          'License :: OSI Approved :: Python Software Foundation License',
-          'Operating System :: OS Independent',
-          'Programming Language :: Python',
-          'Programming Language :: Python :: 2',
-          'Topic :: Scientific/Engineering',
-          ],
-    keywords='PAR satlantic oceanography light photosynthetcally',
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
+if sys.argv[-1] == 'publish':
+    os.system('python setup.py sdist upload')
+    sys.exit()
+
+readme = open('README.md').read()
+history = open('HISTORY.rst').read().replace('.. :changelog:', '')
+
+setup(
+    name='PARpy',
+    version='0.1.0',
+    description='Processing tool for PAR data of Satlantic Radiometers',
+    long_description=readme + '\n\n' + history,
     author='Arnaldo Russo',
     author_email='arnaldorusso@gmail.com',
-    url='ciclotux.blogspot.com',
-    license='PSF',
-    packages=find_packages('src'),
-    package_dir = {'': 'src'},
+    url='https://github.com/arnaldorusso/PARpy',
+    packages=[
+        'PARpy',
+    ],
+    package_dir={'': 'PARpy'},
     include_package_data=True,
+    install_requires=[
+    ],
+    license="PSF",
     zip_safe=False,
-    install_requires=install_requires,
-    #entry_points={
-    #    'console_scripts':
-    #        ['PAR_model=par_model:main']
-    }
+    keywords='PAR Photosynthetically Active Radiance Light Solar Angle',
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: Python Software Foundation License',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: Scientific/Oceanography',
+    ],
+    test_suite='tests',
 )
