@@ -32,13 +32,34 @@ def extract_mat(indir):
                 tt = datetime.strptime('00'+str(hour), "%H%M%S%f")
                 at = (tt + timedelta(days=ttd)).replace(year=tty)
                 d['hours'].append(at)
-            else:
-                # Problems with dates like 100716.
-                # 1 hour, 00 minutes, 7 seconds, 16 microseconds
-                # Still parsing in wrong way!
-                tt = datetime.strptime(str(hour), "%H%M%S%f")
+                print '== 5 ', hour, at
+                
+            elif len(str(hour)) == 6:
+                xs = str(hour)
+                ps = '-'.join(xs[:2])+'-'.join(xs[2:4])+'-'.join(xs[4:6])
+                if int(ps[-4:-2]) > 59:
+                    ps = '-'.join(xs[:2])+'-'.join(xs[2:4])+'-'+xs[-2:]
+                tt = datetime.strptime(ps, "%H-%M-%S-%f")
                 at = (tt + timedelta(days=ttd)).replace(year=tty)
                 d['hours'].append(at)
+                print 'igual a 6 ', hour, at
+            
+            else:
+                xs = str(hour)
+                ps = xs[:2] +'-'+ xs[2:4] +'-'+ xs[4:6] +'-'+ xs[6:]
+                if int(ps[6:8]) > 59:
+                    ps = xs[:2]+'-'+ xs[2:4] +'-'+xs[4:5] +'-'+ xs[5:]
+                    if ps[:2] == '24':
+                        ps = ps.replace(ps[:2],'00')
+                elif int(ps[:2]) == 24:
+                    ps = '00' +'-'+ xs[2:4] +'-'+xs[4:6] +'-'+ xs[6:]
+                    if int(ps[6:8]) > 59:
+                        ps = '00'+'-'+ xs[2:4] +'-'+xs[4:5] +'-'+ xs[5:]
+                        
+                tt = datetime.strptime(ps, "%H-%M-%S-%f")
+                at = (tt + timedelta(days=ttd)).replace(year=tty)
+                d['hours'].append(at)               
+                print 'qualquer outro tamanho', hour, at
 
         if d:
             dicts.append(d)
