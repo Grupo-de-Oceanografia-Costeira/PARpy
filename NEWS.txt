@@ -4,5 +4,5 @@ News
 0.1
 -----
 
-*Preparing parsing of dates and PAR values*
+*Parsing dates, hours and and PAR values*
 
