@@ -58,7 +58,6 @@ def extract_mat(indir):
                         ps = '00'+'-'+ xs[2:4] +'-'+xs[4:5] +'-'+ xs[5:]
                 elif int(ps[:2]) > 24:
                     ps = '00-00-00-00'
-                
                         
                 tt = datetime.strptime(ps, "%H-%M-%S-%f")
                 at = (tt + timedelta(days=ttd)).replace(year=tty)
