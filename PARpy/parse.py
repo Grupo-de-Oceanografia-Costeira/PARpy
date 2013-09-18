@@ -14,7 +14,7 @@ def extract_mat(indir):
 
     for filename in sorted(glob.glob(os.path.join(indir, '*.mat'))):
         f = loadmat(filename)
-        print filename
+        print("Processing File:", filename)
         dat = f['hdfdata']['Reference_Par_hyperspectral_data']
         dates = dat[0,0][:,0]
         hours = np.int64(dat[0,0][:,1])
@@ -59,7 +59,6 @@ def extract_mat(indir):
                 elif int(ps[:2]) > 24:
                     ps = '00-00-00-00'
                 
-                print ps
                         
                 tt = datetime.strptime(ps, "%H-%M-%S-%f")
                 at = (tt + timedelta(days=ttd)).replace(year=tty)
