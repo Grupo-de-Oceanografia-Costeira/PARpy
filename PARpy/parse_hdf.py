@@ -5,6 +5,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import glob
 import os
+import h5py
 
 def extract_hdf(indir):
     '''
@@ -15,5 +16,16 @@ def extract_hdf(indir):
     '''
     dicts = []
     d = {}
-
+    
     for filename in sorted(glob.glob(os.path.join(indir, '*.h5'))):
+        f = h5py.File(filename)
+        print("Processing File ", filename)
+        dates = []
+        hours = []
+        par = []
+        for att in f.val:
+            dates.append(att[0])
+            hours.append(att[1])
+            par.append(att[2])
+        
+
