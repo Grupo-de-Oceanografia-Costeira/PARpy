@@ -2,24 +2,32 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from scipy.io import loadmat
 from datetime import datetime, timedelta
 import glob
 import os
+import h5py
 
-
-def extract_mat(indir):
+def extract_hdf(indir):
+    '''
+    This function works with hdf5 (.h5)
+    If you have hdf4 files provided from Satlantic processing tools,
+    you should convert it using the "h4toh5".
+    http://www.hdfgroup.org/h4toh5/
+    '''
     dicts = []
     d = {}
-
-    for filename in sorted(glob.glob(os.path.join(indir, '*.mat'))):
-        f = loadmat(filename)
-        print("Processing File:", filename)
-        dat = f['hdfdata']['Reference_Par_hyperspectral_data']
-        dates = dat[0,0][:,0]
-        hours = np.int64(dat[0,0][:,1])
-        par = dat[0,0][:,2]
-
+    
+    for filename in sorted(glob.glob(os.path.join(indir, '*.h5'))):
+        f = h5py.File(filename)
+        ff = f['Photosynthetically Available Radiation']['Reference_Par_hyperspectral']
+        print("Processing File ", filename)
+        dates = []
+        hours = []
+        par = []
+        for att in ff:
+            dates.append(att[0])
+            hours.append(np.int64(att[1]))
+            par.append(att[2])
         d['name'] = filename
         d['par'] = par
         d['dates'] = dates
@@ -28,40 +36,19 @@ def extract_mat(indir):
         ttd = np.int(td[-3::])
         tty = np.int(td[:4])
 
-        for hour in hours:
-            if len(str(hour)) <= 5:
-                tt = datetime.strptime('00'+str(hour), "%H%M%S%f")
-                at = (tt + timedelta(days=ttd)).replace(year=tty)
-                d['hours'].append(at)
-                                
-            elif len(str(hour)) == 6:
-                xs = str(hour)
-                ps = '-'.join(xs[:2])+'-'.join(xs[2:4])+'-'.join(xs[4:6])
-                if int(ps[-4:-2]) > 59:
-                    ps = '-'.join(xs[:2])+'-'.join(xs[2:4])+'-'+xs[-2:]
-                tt = datetime.strptime(ps, "%H-%M-%S-%f")
-                at = (tt + timedelta(days=ttd)).replace(year=tty)
-                d['hours'].append(at)
-                            
-            elif len(str(hour)) > 6:
-                xs = str(hour)
-                ps = xs[:2] +'-'+ xs[2:4] +'-'+ xs[4:6] +'-'+ xs[6:]
-                if int(ps[6:8]) > 59:
-                    ps = xs[:2]+'-'+ xs[2:4] +'-'+xs[4:5] +'-'+ xs[5:]
-                    if ps[:2] == '24':
-                        ps = ps.replace(ps[:2],'00')
-                    elif int(ps[:2]) > 24:
-                        ps = '00-00-00-00' 
-                elif int(ps[:2]) == 24:
-                    ps = '00' +'-'+ xs[2:4] +'-'+xs[4:6] +'-'+ xs[6:]
-                    if int(ps[6:8]) > 59:
-                        ps = '00'+'-'+ xs[2:4] +'-'+xs[4:5] +'-'+ xs[5:]
-                elif int(ps[:2]) > 24:
-                    ps = '00-00-00-00'
-                        
-                tt = datetime.strptime(ps, "%H-%M-%S-%f")
-                at = (tt + timedelta(days=ttd)).replace(year=tty)
-                d['hours'].append(at)               
+        for i,hour in enumerate(hours):
+            if len(str(hour)) >= 8:
+                if par[i] <= 1:
+                    d['hours'].append(np.nan)
+                else:
+                    tt = datetime.strptime(str(hour), "%H%M%S%f")
+                    at = (tt + timedelta(days=ttd)).replace(year=tty)
+                    d['hours'].append(at)
+                    print('igual maior que 8', hour)
+            
+            else:
+                d['hours'].append(np.nan)
+                print('nan', hour)        
 
         if d:
             dicts.append(d)
