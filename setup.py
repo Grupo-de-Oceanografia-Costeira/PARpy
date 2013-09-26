@@ -28,10 +28,11 @@ setup(
     packages=[
         'PARpy',
     ],
-    package_dir={'': 'PARpy'},
-    include_package_data=True,
+    #package_dir={'': 'PARpy'},
+    #include_package_data=True,
     install_requires=[
         'numpy',
+        'h5py',
         'pysolar'
     ],
     license="PSF",
