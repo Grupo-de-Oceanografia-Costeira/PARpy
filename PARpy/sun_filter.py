@@ -3,6 +3,7 @@
 
 import Pysolar
 from datetime import datetime
+import numpy as np
 
 def filter_solar_angle(Lat, Lon, Value, Temp):
     '''
