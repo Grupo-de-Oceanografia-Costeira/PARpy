@@ -1,17 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#import numpy as np
-#from datetime import datetime, timedelta
-#import glob
-#import os
-#import h5py
-
 '''
-group equal days
+group by equal days (days running per year)
 '''
 
-#from PARpy.parse import extract_hdf
+#from PARpy.parse import extract_dat
 
 #d = extract_hdf('.')
 
