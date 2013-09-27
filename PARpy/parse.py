@@ -44,12 +44,10 @@ def extract_hdf(indir):
                     tt = datetime.strptime(str(hour), "%H%M%S%f")
                     at = (tt + timedelta(days=ttd)).replace(year=tty)
                     d['hours'].append(at)
-                    print('igual maior que 8', hour)
-            
+                                
             else:
                 d['hours'].append(np.nan)
-                print('nan', hour)        
-
+                
         if d:
             dicts.append(d)
         d = {}
