@@ -7,7 +7,7 @@ group by equal days (days running per year)
 
 #from PARpy.parse import extract_dat
 
-#d = extract_hdf('.')
+#d = extract_dat('.')
 
 ### Testing Set
 
