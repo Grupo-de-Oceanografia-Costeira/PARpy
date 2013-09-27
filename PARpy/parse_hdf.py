@@ -7,12 +7,29 @@ import glob
 import os
 import h5py
 
-def extract_hdf(indir):
+def extract_dat(indir):
     '''
+    Parameters
+    ----------
+    indir : Directory as string
+    
+    Returns
+    -------
+    Dictionary of elements{
+            'name' : File name
+            'par'  : PAR value
+            'dates': Dates with number of running days
+            'hours': Datetime object, parsed dates.
+    
+    See Also
+    --------
     This function works with hdf5 (.h5)
     If you have hdf4 files provided from Satlantic processing tools,
     you should convert it using the "h4toh5".
     http://www.hdfgroup.org/h4toh5/
+    
+    
+    
     '''
     dicts = []
     d = {}
@@ -44,11 +61,11 @@ def extract_hdf(indir):
                     tt = datetime.strptime(str(hour), "%H%M%S%f")
                     at = (tt + timedelta(days=ttd)).replace(year=tty)
                     d['hours'].append(at)
-                    print('igual maior que 8', hour)
+             #       print('igual maior que 8', hour)
             
             else:
                 d['hours'].append(np.nan)
-                print('nan', hour)        
+             #   print('nan', hour)        
 
         if d:
             dicts.append(d)
