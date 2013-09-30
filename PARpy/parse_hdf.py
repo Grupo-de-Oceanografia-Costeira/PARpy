@@ -59,7 +59,7 @@ def extract_dat(indir):
                     ttd = np.int(td[-3::]) # running day
                     tty = np.int(td[:4])   # year
                     tt = datetime.strptime(str(hour), "%H%M%S%f")
-                    at = (tt + timedelta(days=ttd)).replace(year=tty)
+                    at = (tt + timedelta(days=ttd-1)).replace(year=tty)
                     d['hours'].append(at)
              #       print('igual maior que 8', hour)
             
