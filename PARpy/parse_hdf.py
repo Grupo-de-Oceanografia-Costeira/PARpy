@@ -49,15 +49,15 @@ def extract_dat(indir):
         d['par'] = par
         d['dates'] = dates
         d['hours'] = []
-        td = str(np.int(d['dates'][0]))
-        ttd = np.int(td[-3::])
-        tty = np.int(td[:4])
 
         for i,hour in enumerate(hours):
             if len(str(hour)) >= 8:
                 if par[i] <= 1:
                     d['hours'].append(np.nan)
                 else:
+                    td = str(np.int(d['dates'][i]))
+                    ttd = np.int(td[-3::]) # running day
+                    tty = np.int(td[:4])   # year
                     tt = datetime.strptime(str(hour), "%H%M%S%f")
                     at = (tt + timedelta(days=ttd)).replace(year=tty)
                     d['hours'].append(at)
