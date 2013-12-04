@@ -8,7 +8,7 @@ import os
 import h5py
 
 def extract_dat(indir):
-    '''
+    """ 
     Parameters
     ----------
     indir : Directory as string
@@ -27,10 +27,7 @@ def extract_dat(indir):
     If you have hdf4 files provided from Satlantic processing tools,
     you should convert it using the "h4toh5".
     http://www.hdfgroup.org/h4toh5/
-    
-    
-    
-    '''
+    """
     dicts = []
     d = {}
     
