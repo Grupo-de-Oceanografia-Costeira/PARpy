@@ -20,7 +20,7 @@ def h5_extract(indir):
             'name' : File name
             'par'  : PAR value
             'dates': Dates with number of running days
-            'hours': Datetime object, parsed dates.
+            'hours': Datetime object with parsed dates.
     
     See Also
     --------
@@ -81,7 +81,7 @@ def mat_extract(indir):
             'name' : File name
             'par'  : PAR value
             'dates': Dates with number of running days
-            'hours': Datetime object, parsed dates.
+            'hours': Datetime object with parsed dates.
     """
 
     dicts = []
