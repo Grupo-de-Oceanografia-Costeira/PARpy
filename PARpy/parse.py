@@ -33,11 +33,11 @@ def genfilelist(indir):
         
     return genlist
 
-def h5_extract(files):
+def h5_extract(filelist):
     """ 
     Parameters
     ----------
-    files : list of filenames (str)
+    filelist : list of filenames (str)
     
     Returns
     -------
@@ -56,7 +56,7 @@ def h5_extract(files):
     """
     dicts = []
     d = {}
-    for filename in files:
+    for filename in filelist:
         f = h5py.File(filename)
         ff = f['Photosynthetically Available Radiation']['Reference_Par_hyperspectral']
         print("Processing File ", filename)
