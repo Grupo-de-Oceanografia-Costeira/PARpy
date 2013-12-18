@@ -8,11 +8,36 @@ import os
 import h5py
 from scipy.io import loadmat
 
-def h5_extract(indir):
+def genfilelist(indir):
+    """
+    Get specific files in directory to be parsed
+    
+    Parameters
+    ----------
+    indir : str
+    
+    Returns
+    -------
+    genlist : list of strings
+        List contains names of specific filenames and extension
+    
+    Example
+    -------
+    files = genfilelist('*.h5')
+    files2 = genfilelist('../*.mat')
+    files3 = genfilelist('~/Documents/*.mat')
+    """
+    genlist = []
+    for filename in sorted(glob.glob(os.path.join(indir))):
+        genlist.append(filename)
+        
+    return genlist
+
+def h5_extract(files):
     """ 
     Parameters
     ----------
-    indir : Directory as string
+    files : list of filenames (str)
     
     Returns
     -------
@@ -31,8 +56,7 @@ def h5_extract(indir):
     """
     dicts = []
     d = {}
-    
-    for filename in sorted(glob.glob(os.path.join(indir, '*.h5'))):
+    for filename in files:
         f = h5py.File(filename)
         ff = f['Photosynthetically Available Radiation']['Reference_Par_hyperspectral']
         print("Processing File ", filename)
@@ -43,11 +67,11 @@ def h5_extract(indir):
             dates.append(att[0])
             hours.append(np.int64(att[1]))
             par.append(att[2])
+
         d['name'] = filename
         d['par'] = par
         d['dates'] = dates
         d['hours'] = []
-
         for i,hour in enumerate(hours):
             if len(str(hour)) >= 8:
                 if par[i] <= 1:
@@ -59,7 +83,6 @@ def h5_extract(indir):
                     tt = datetime.strptime(str(hour), "%H%M%S%f")
                     at = (tt + timedelta(days=ttd-1)).replace(year=tty)
                     d['hours'].append(at)
-
             else:
                 d['hours'].append(np.nan)
 
@@ -86,7 +109,6 @@ def mat_extract(indir):
 
     dicts = []
     d = {}
-
     for filename in sorted(glob.glob(os.path.join(indir, '*.mat'))):
         f = loadmat(filename)
         print("Processing File:", filename)
@@ -94,7 +116,6 @@ def mat_extract(indir):
         dates = dat[0,0][:,0]
         hours = np.int64(dat[0,0][:,1])
         par = dat[0,0][:,2]
-
         d['name'] = filename
         d['par'] = par
         d['dates'] = dates
@@ -102,7 +123,6 @@ def mat_extract(indir):
         td = str(np.int(d['dates'][0]))
         ttd = np.int(td[-3::])
         tty = np.int(td[:4])
-
         for i,hour in enumerate(hours):
             if len(str(hour)) >= 8:
                 if par[i] <= 1:
@@ -112,7 +132,6 @@ def mat_extract(indir):
                     at = (tt + timedelta(days=ttd)).replace(year=tty)
                     d['hours'].append(at)
                     print('igual maior que 8', hour)
-            
             else:
                 d['hours'].append(np.nan)
                 print('nan', hour)        
@@ -120,5 +139,5 @@ def mat_extract(indir):
         if d:
             dicts.append(d)
         d = {}
-    
+
     return dicts
