@@ -5,42 +5,44 @@ import Pysolar
 from datetime import datetime
 import numpy as np
 
-def filter_solar_angle(Lat, Lon, Value, Temp):
+def filter_solar_angle(lat, lon, value, temp=0):
     '''
     Filter values of an array by their valid solar angle.
     Satlantic HyperOCR Hyperspectral Radiometer.
     http://satlantic.com/hyperspectral-radiometers
-    
+
     Pysolar is used to calculate elevation angles greater than 30 deg.
-        
+
     Parameters
     ----------
-    Lat : Latitude in degrees
-    Lon : Longitude in degrees
-    Value : An array of datetime objects
+    lat : Latitude in degrees
+    lon : Longitude in degrees
+    value : An array of datetime objects
     temp : Temperature of air
-    
+        default is 0 celsius degree.
+
     Returns
     -------
-    
-    temp : ndarray of boolean values
-    filt : Filtered values
+
+    angles : ndarray of boolean values
+        filtered valid angles, obtained with Pysolar
+    valid : ndarray
+        Valid PAR values, filtered by valid angles
     '''
-    
-    filt = []
-    temp = []
-    
-    for h in Value:
+
+     angles= []
+
+    for h in value:
         if type(h) != datetime:
             temp.append(np.nan)
         else:
-            ang = Pysolar.GetAltitude(Lat, Lon, h, temperature_celsius=Temp)
-            temp.append(ang)
+            ang = Pysolar.GetAltitude(lat, lon, h, temperature_celsius=temp)
+            angles.append(ang)
             print ang
-    
-    temp = np.array(temp)
-    Value = np.array(Value)    
-    filt = Value[temp>30]    
-    
-    return temp,filt
-    
+
+    angles = np.array(angles)
+    value = np.array(value)
+    valid = Value[temp>30]
+
+    return angles, valid
+
