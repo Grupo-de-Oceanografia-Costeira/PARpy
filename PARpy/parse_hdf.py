@@ -58,10 +58,12 @@ def extract_dat(indir):
                     tt = datetime.strptime(str(hour), "%H%M%S%f")
                     at = (tt + timedelta(days=ttd-1)).replace(year=tty)
                     d['hours'].append(at)
-             
+
             else:
                 d['hours'].append(np.nan)
 
         if d:
             dicts.append(d)
         d = {}
+
+    return dicts
