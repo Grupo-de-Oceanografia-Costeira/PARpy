@@ -42,10 +42,12 @@ def h5_extract(filelist):
     Returns
     -------
     Dictionary of elements
-            'name' : File name
-            'par'  : PAR value
-            'dates': Dates with number of running days
-            'hours': Datetime object with parsed dates.
+        'name' : File name
+        'latitude'  : Degrees parsed only if RAW file is together
+        'longitude' : Degrees parsed only if RAW file is together
+        'par'  : PAR (Photosynthetical Active Radiance) value
+        'dates': Dates with number of running days
+        'hours': Datetime object with parsed dates.
     
     See Also
     --------
@@ -60,6 +62,33 @@ def h5_extract(filelist):
         f = h5py.File(filename)
         ff = f['Photosynthetically Available Radiation']['Reference_Par_hyperspectral']
         print("Processing File ", filename)
+        # Processing Raw file
+        try:
+            raw = open(filename.replace('_L4.h5', '.raw'), "rb")
+            rawd = raw.read()
+            raw.close()
+            lat_part = rawd[775:777]
+            lat_minute = rawd[778:784]
+            lat = np.float(lat_part) + np.float(lat_minute)*0.0166666667
+            
+            lon_part = rawd[903:905]
+            lon_minute = rawd[906:912]
+            lon = np.float(lon_part) + np.float(lon_minute)*0.0166666667
+            
+            if rawd[786] == 'S':
+                lat  = -lat
+            if rawd[914] == 'W':
+                lon = -lon
+            else:
+                pass
+                
+            d['latitude'] = lat
+            d['longitude'] = lon
+        
+        except:
+            d['latitude'] = np.nan
+            d['longitude'] = np.nan
+            
         dates = []
         hours = []
         par = []
@@ -85,7 +114,8 @@ def h5_extract(filelist):
                     d['hours'].append(at)
             else:
                 d['hours'].append(np.nan)
-
+        # TODO!
+        # Classify dicts as OrderedDict.
         if d:
             dicts.append(d)
         d = {}
