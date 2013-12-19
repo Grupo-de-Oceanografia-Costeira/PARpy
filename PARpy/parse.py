@@ -11,16 +11,16 @@ from scipy.io import loadmat
 def genfilelist(indir):
     """
     Get specific files in directory to be parsed
-    
+
     Parameters
     ----------
     indir : str
-    
+
     Returns
     -------
     genlist : list of strings
         List contains names of specific filenames and extension
-    
+
     Example
     -------
     files = genfilelist('*.h5')
@@ -30,15 +30,15 @@ def genfilelist(indir):
     genlist = []
     for filename in sorted(glob.glob(os.path.join(indir))):
         genlist.append(filename)
-        
+
     return genlist
 
 def h5_extract(filelist):
-    """ 
+    """
     Parameters
     ----------
     filelist : list of filenames (str)
-    
+
     Returns
     -------
     Dictionary of elements
@@ -48,7 +48,7 @@ def h5_extract(filelist):
         'par'  : PAR (Photosynthetical Active Radiance) value
         'dates': Dates with number of running days
         'hours': Datetime object with parsed dates.
-    
+
     See Also
     --------
     This function works with hdf5 (.h5)
@@ -70,25 +70,25 @@ def h5_extract(filelist):
             lat_part = rawd[775:777]
             lat_minute = rawd[778:784]
             lat = np.float(lat_part) + np.float(lat_minute)*0.0166666667
-            
+
             lon_part = rawd[903:905]
             lon_minute = rawd[906:912]
             lon = np.float(lon_part) + np.float(lon_minute)*0.0166666667
-            
+
             if rawd[786] == 'S':
                 lat  = -lat
             if rawd[914] == 'W':
                 lon = -lon
             else:
                 pass
-                
+
             d['latitude'] = lat
             d['longitude'] = lon
-        
+
         except:
             d['latitude'] = np.nan
             d['longitude'] = np.nan
-            
+
         dates = []
         hours = []
         par = []
@@ -123,11 +123,11 @@ def h5_extract(filelist):
     return dicts
 
 def mat_extract(indir):
-    """ 
+    """
     Parameters
     ----------
     indir : Directory as string
-    
+
     Returns
     -------
     Dictionary of elements
@@ -164,7 +164,7 @@ def mat_extract(indir):
                     print('igual maior que 8', hour)
             else:
                 d['hours'].append(np.nan)
-                print('nan', hour)        
+                print('nan', hour)
 
         if d:
             dicts.append(d)
