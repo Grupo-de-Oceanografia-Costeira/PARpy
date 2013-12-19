@@ -30,7 +30,7 @@ def filter_solar_angle(lat, lon, value, temp=0):
         Valid PAR values, filtered by valid angles
     '''
 
-     angles= []
+    angles= []
 
     for h in value:
         if type(h) != datetime:
