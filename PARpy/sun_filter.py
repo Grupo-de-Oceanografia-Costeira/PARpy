@@ -34,7 +34,7 @@ def filter_solar_angle(lat, lon, value, angle=30, temp=0):
 
     for h in value:
         if type(h) != datetime:
-            temp.append(np.nan)
+            angles.append(np.nan)
         else:
             ang = Pysolar.GetAltitude(lat, lon, h, 
                                         temperature_celsius=temp)
