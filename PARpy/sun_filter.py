@@ -5,14 +5,9 @@ import Pysolar
 from datetime import datetime
 import numpy as np
 
-<<<<<<< Updated upstream
-def filter_solar_angle(lat, lon, value, angle=30, temp=0):
-    '''
-=======
 
-def filter_solar_angle(lat, lon, value, temp=0):
+def filter_solar_angle(lat, lon, dates, angle=30, temp=0):
     """
->>>>>>> Stashed changes
     Filter values of an array by their valid solar angle.
     Satlantic HyperOCR Hyperspectral Radiometer.
     http://satlantic.com/hyperspectral-radiometers
@@ -23,28 +18,24 @@ def filter_solar_angle(lat, lon, value, temp=0):
     ----------
     lat : Latitude in degrees
     lon : Longitude in degrees
-    value : An array of datetime objects
+    dates : An array of datetime objects
+    angle : Sun elevation angle
+        default is 30 degree.
     temp : Temperature of air
         default is 0 celsius degree.
 
     Output
     ------
-
     angles : ndarray of boolean values
         filtered valid angles, obtained with Pysolar
     valid : ndarray
-<<<<<<< Updated upstream
         Filtered angles value, greater than 30.
-    '''
 
-    angles= []
-=======
         Valid PAR values, filtered by valid angles
     """
     angles = []
->>>>>>> Stashed changes
 
-    for h in value:
+    for h in dates:
         if type(h) != datetime:
             angles.append(np.nan)
         else:
@@ -54,17 +45,13 @@ def filter_solar_angle(lat, lon, value, temp=0):
             print ang
 
     angles = np.array(angles)
-    value = np.array(value)
-<<<<<<< Updated upstream
-    valid = value[angles > angle]
-=======
-    valid = value[angles > 30]
->>>>>>> Stashed changes
+    dates = np.array(dates)
+    valid = dates[angles > angle]
 
     return angles, valid
 
 
-def day_light(lat, lon, day, altitude=30., temp=0):
+def day_light(lat, lon, day, angle=30., temp=0):
     """
     Function to return available day light time, based on specific sun
     altitude angle.
@@ -77,7 +64,7 @@ def day_light(lat, lon, day, altitude=30., temp=0):
         Longitude
     day: datetime object
         Date containing year, month, day
-    altitude: float
+    angle: float
         Standard value is 30. but you may change it to acquire available
         day time of specific sun altitude sunrise to sunset.
     temp: float
@@ -95,7 +82,7 @@ def day_light(lat, lon, day, altitude=30., temp=0):
                 hours.append(
                     datetime.datetime(day.year, day.month, day.day, h, m, s))
 
-    angles, valid = filter_solar_angle(lat, lon, hours, altitude, temp)
+    angles, valid = filter_solar_angle(lat, lon, hours, angle, temp)
 
     sunrise = valid[0]
     sunset = valid[-1]
