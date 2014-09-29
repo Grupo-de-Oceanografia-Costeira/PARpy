@@ -8,11 +8,11 @@ import numpy as np
 
 def filter_solar_angle(lat, lon, dates, angle=30, temp=0):
     """
-    Filter values of an array by their valid solar angle.
+    Filter values of an array by their valid solar elevation angle.
     Satlantic HyperOCR Hyperspectral Radiometer.
     http://satlantic.com/hyperspectral-radiometers
 
-    Pysolar is used to calculate elevation angles greater than 30 deg.
+    `Pysolar` is used to calculate sun elevation angle.
 
     Parameters
     ----------
@@ -30,8 +30,6 @@ def filter_solar_angle(lat, lon, dates, angle=30, temp=0):
         filtered valid angles, obtained with Pysolar
     valid : ndarray
         Filtered angles value, greater than 30.
-
-        Valid PAR values, filtered by valid angles
     """
     angles = []
 
@@ -54,7 +52,7 @@ def filter_solar_angle(lat, lon, dates, angle=30, temp=0):
 def day_light(lat, lon, day, angle=30., temp=0):
     """
     Function to return available day light time, based on specific sun
-    altitude angle.
+    elevation angle.
 
     Parameters
     ----------
@@ -66,14 +64,25 @@ def day_light(lat, lon, day, angle=30., temp=0):
         Date containing year, month, day
     angle: float
         Standard value is 30. but you may change it to acquire available
-        day time of specific sun altitude sunrise to sunset.
+        day time of specific sun elevation angle sunrise to sunset.
     temp: float
         Air temperature, used on pysolar sun altitude algorithm.
         Default for this code is 0 Celsius degree.
 
     Returns
     -------
+    day_length : tuple
+        Hours, Minutes and seconds of available day light.
+    sunrise : datetime object
+        Sunrise datetime of specific sun altitude.
+    sunset : datetime object
+        Sunset datetime of specific sun altitude.
 
+    Notes
+    -----
+    More information on sun angles can be accessed at:
+    http://www.esrl.noaa.gov/gmd/grad/solcalc/azelzen.gif
+    where `h` is the elevation angle.
     """
     hours = []
     for h in range(24):
@@ -86,6 +95,10 @@ def day_light(lat, lon, day, angle=30., temp=0):
 
     sunrise = valid[0]
     sunset = valid[-1]
-    # TODO
-    # Compute difference between sunrise and sunset == Day length.
-    return sunrise, sunset
+    diff = sunset - sunrise
+    hours = divmod(diff.seconds, 3600)
+    minutes = divmod(hours[1], 60)
+    seconds = minutes[1]
+    day_length = [hours, minutes, seconds]
+
+    return day_length, sunrise, sunset
