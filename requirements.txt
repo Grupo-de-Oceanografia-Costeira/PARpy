@@ -1,4 +1,4 @@
-'numpy',
-'h5py'
-'pysolar'
-'scipy'
+numpy
+h5py
+pysolar
+scipy
