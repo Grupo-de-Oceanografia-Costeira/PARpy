@@ -43,7 +43,7 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: Python Software Foundation License',
         'Programming Language :: Python :: 2.7',
-        'Topic :: Scientific/Oceanography',
+        'Topic :: Scientific/Engineering :: Atmospheric Science',
     ],
     test_suite='tests',
 )
