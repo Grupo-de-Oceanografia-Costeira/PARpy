@@ -24,7 +24,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author='Arnaldo Russo',
     author_email='arnaldorusso@gmail.com',
-    url='https://github.com/arnaldorusso/PARpy',
+    url='https://github.com/Grupo-de-Oceanografia-Costeira/PARpy',
     packages=[
         'PARpy',
     ],
